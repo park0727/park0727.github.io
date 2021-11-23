@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skc dashboard</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/jquery-ui.css">
+    <script src="../js/jquery-3.6.0.js"></script>
+    <script src="../js/jquery-ui.js"></script>
+    <script type="text/javascript" src="../data/data3.json"></script>
+    <script type="text/javascript">
+      $((function() {
+        dialog = $( "#dialog-form" ).dialog({
+          autoOpen: false,
+          height: 1000,
+          width: 1400,
+          modal: true,
+          buttons: {
+            "닫기": function() {
+              dialog.dialog( "close" );
+            }
+          },
+          close: function() {
+          }
+        });
+
+        loadJsonData(1);
+
+        var startFlag = "E";
+        var callAPI;
+
+        $('#header').click(function() {
+          
+          if(startFlag == "E") {
+            startFlag = "S";
+
+            console.log("start call API");
+            var loadCnt = 2;
+
+            callAPI = setInterval(() => {
+              loadJsonData(loadCnt);
+              loadCnt < 13 ? loadCnt++ : loadCnt = 0;
+            }, 3000);
+          } else {
+            startFlag = "E";
+            clearInterval(callAPI);
+            console.log("stop call API");
+          }
+        });
+
+        $('#showModal').click(function() {
+          dialog.dialog( "open" );
+        });
+      }));
+
+      function loadJsonData(count) {
+        var dataList;
+
+        switch (count) {
+          case 1:
+            dataList = JSON.parse(JSON.stringify(progressData1));
+            break;
+          case 2:
+            dataList = JSON.parse(JSON.stringify(progressData2));
+            break;
+          case 3:
+            dataList = JSON.parse(JSON.stringify(progressData3));
+            break;
+          case 4:
+            dataList = JSON.parse(JSON.stringify(progressData4));
+            break;
+          case 5:
+            dataList = JSON.parse(JSON.stringify(progressData5));
+            break;
+          case 6:
+            dataList = JSON.parse(JSON.stringify(progressData6));
+            break;
+          case 7:
+            dataList = JSON.parse(JSON.stringify(progressData7));
+            break;
+          case 8:
+            dataList = JSON.parse(JSON.stringify(progressData8));
+            break;
+          case 9:
+            dataList = JSON.parse(JSON.stringify(progressData9));
+            break;
+          case 10:
+            dataList = JSON.parse(JSON.stringify(progressData10));
+            break;
+          case 11:
+            dataList = JSON.parse(JSON.stringify(progressData11));
+            break;
+          case 12:
+            dataList = JSON.parse(JSON.stringify(progressData12));
+            break;
+          case 13:
+            dataList = JSON.parse(JSON.stringify(progressData12));
+            break;
+        }
+
+        console.log(dataList);
+        // 차후 ajax를 통한 data load 후 dataList 전달
+        setData(dataList);
+      }
+
+      function setData(dataList) {
+        // 정류기 수
+        // $('#rectifierCount').text(dataList.length + "대")
+        
+        // 컴프레셔 현황 테이블 기존 데이터 삭제
+        $('#compressorTable').children('tbody').empty();
+
+        // 컴프레셔 현황 데이터 추가
+        $('#compressorTable').children('tbody').append(
+                      '<tr>' +
+                        '<td><span class="alert_box line_btm">메인1</span></td>' +
+                        '<td>5</td>' +
+                        '<td><span class="alert_box bg_green">운전</span></td>' +
+                        '<td><span class="color_red">379.2</span></td>' +
+                        '<td><span class="color_blue">2.5</span></td>' +
+                        '<td>35.7</td>' +
+                        '<td>33.5</td>' +
+                        '<td>45.7</td>' +
+                      '</tr>'
+        );
+
+        // 제품 추적이력관리 현황 테이블 기존 데이터 삭제
+        $('.addedData').remove();
+        $('#historyTable').children('tbody').empty();
+
+
+        // 정류기 현황 테이블 기존 데이터 삭제
+        $('#rectifieTable').children('tbody').empty();
+
+        // 공정 수
+        var runningCnt = 0;
+
+        for(var idx in dataList) {
+
+          var statusCol = "";
+          var inputVoltage;
+          var inputCurrent;
+          var insideTemp;
+          var outsideTemp;
+          var outsideHumidity;
+          
+
+          // 실행중인 공정 아이콘 색상 표시
+          if(dataList[idx].status == "run") {
+            $('#p'+dataList[idx].rectifierNo).addClass('on');
+            statusCol = '<td><span class="alert_box bg_green">운전</span></td>';
+            inputVoltage = getRandom(350, 400).toFixed(2);
+            inputCurrent = getRandom(1, 4).toFixed(2);
+            runningCnt++;
+
+            var rno = dataList[idx].rectifierNo;
+            var col1 = '<td class="dark_gray">&nbsp;</td>';
+            var col2 = '<td>&nbsp;</td>';
+            var col3 = '<td>&nbsp;</td>';
+            var col4 = '<td class="dark_gray">&nbsp;</td>';
+            var col5 = '<td class="dark_gray">&nbsp;</td>';
+            var col6 = '<td class="dark_gray">&nbsp;</td>';
+            var col7 = '<td>&nbsp;</td>';
+            var col8 = '<td>&nbsp;</td>';
+            var col9 = '<td class="dark_gray">&nbsp;</td>';
+            var col10 = '<td class="dark_gray">&nbsp;</td>';
+            var col11 = '<td class="dark_gray">&nbsp;</td>';
+            var col12 = '<td class="dark_gray">&nbsp;</td>';
+
+            switch(rno) {
+              case 1:
+              col1 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 2:
+              col2 = '<td><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 3:
+              col3 = '<td><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 4:
+              col4 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 5:
+              col5 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 6:
+              col6 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 7:
+              col7 = '<td><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 8:
+              col8 = '<td><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 9:
+              col9 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 10:
+              col10 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 11:
+              col11 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+              case 12:
+              col12 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+              break;
+            }
+
+            // 제품 추적이력관리 데이터 추가
+            $('#historyLeft').append(
+                          '<li class="addedData">' +
+                            '<span class="alert_box bg_green">5</span>' +
+                            '<span>' + dataList[idx].material + '</span>' +
+                          '</li>'
+            );
+            $('#historyTable').children('tbody').append(
+                          '<tr>' +
+                            col1 + col2 + col3 + col4 + col5 + col6 + col7 + col8 + col9 + col10 + col11 + col12 +
+                          '</tr>'
+            )
+
+          } else if(dataList[idx].status == "stop") {
+            $('#p'+dataList[idx].rectifierNo).removeClass('on');
+            statusCol = '<td><span class="alert_box bg_gray">정지</span></td>';
+            inputVoltage = "-";
+            inputCurrent = "-";
+          } else {
+            $('#p'+dataList[idx].rectifierNo).removeClass('on');
+            statusCol = '<td><span class="alert_box bg_red">고장</span></td>';
+            inputVoltage = "-";
+            inputCurrent = "-";
+          }
+
+          insideTemp = getRandom(22, 40).toFixed(2);
+          outsideTemp = getRandom(20, 30).toFixed(2);
+          outsideHumidity = getRandom(32, 70).toFixed(2);
+
+          // 정류기 현황 테이블 업데이트
+          $('#rectifieTable').children('tbody').append(
+                      '<tr>'+
+                        '<td><span class="alert_box">' + dataList[idx].progressName + '</span></td>'+
+                        '<td>' + dataList[idx].rectifierNo + '</td>'+
+                        statusCol +
+                        '<td><span class="color_red">' + inputVoltage + '</span></td>'+
+                        '<td><span class="color_blue">' + inputCurrent + '</span></td>'+
+                        '<td>' + insideTemp + '</td>'+
+                        '<td>' + outsideTemp + '</td>'+
+                        '<td>' + outsideHumidity + '</td>'+
+                      '</tr>');
+        }
+
+        // 공정 수
+        console.log(runningCnt);
+        $('#progressCount').text(runningCnt + "개")
+
+        // $('#p1').addClass("on");
+      }
+
+      function getRandom(min, max) {
+        // min = Math.ceil(min);
+        // max = Math.floor(max);
+        // return Math.floor(Math.random() * (max - min + 1)) + min; //최댓값도 포함, 최솟값도 포함
+
+        return Math.random() * (max - min) + min;
+      }
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <header id="header">
+            <nav>
+                <a href="#"> <span>1라인</span></a>
+                <a href="#" class="on ml10"> <span>2라인</span></a>
+            </nav>
+            <p class="update">최근 업데이트: 2021.09.18 14:23:00</p>
+        </header>
+        <main id="content">
+            <div class="up_content">
+                <!-- s:공정명 -->
+                <div class="figure_wrap">
+                    <ul class="caption">
+                        <li>
+                            <strong>공정명 :</strong>
+                            <p> MP Cr 20 공정</p>
+                        </li>
+                        <li>
+                            <strong>공정수:</strong>
+                            <p id="progressCount">0개</p>
+                        </li>
+                        <li>
+                            <strong>정류기 :</strong>
+                            <p id="rectifierCount">12대</p>
+                        </li>
+                    </ul>
+                    <div class="inner_figure">
+                        <ul class="num_explain">
+                            <li class="num_li01">
+                                <a href="#" class="num on" id="p1">1</a>
+                                <span class="txt">Etching: 1</span>
+                            </li>
+                            <li class="num_li02">
+                                <a href="#" class="num" id="p2">2</a>
+                                <span class="txt">Cu Plating: 12</span>
+                            </li>
+                            <li class="num_li03">
+                                <a href="#" class="num" id="p3">3</a>
+                                <span class="txt">Cu Plating: 4</span>
+                            </li>
+                            <li class="num_li04">
+                                <a href="#" class="num" id="p4">4</a>
+                                <span class="txt">반광택 Ni A: 3</span>
+                            </li>
+                            <li class="num_li05">
+                                <a href="#" class="num" id="p5">5</a>
+                                <span class="txt">반광택 Ni A: 1</span>
+                            </li>
+                            <li class="num_li06">
+                                <a href="#" class="num" id="p6">6</a>
+                                <span class="txt">반광택 Ni A: 3</span>
+                            </li>
+                            <li class="num_li07">
+                                <a href="#" class="num" id="p7">7</a>
+                                <span class="txt">반광택 Ni B: 5</span>
+                            </li>
+                            <li class="num_li08">
+                                <a href="#" class="num" id="p8">8</a>
+                                <span class="txt">반광택 Ni B: 2</span>
+                            </li>
+                            <li class="num_li09">
+                                <a href="#" class="num" id="p9">9</a>
+                                <span class="txt">백도금 Ni-St: 1</span>
+                            </li>
+                            <li class="num_li10">
+                                <a href="#" class="num" id="p10">10</a>
+                                <span class="txt">백도금 Ni-St: 2</span>
+                            </li>
+                            <li class="num_li11">
+                                <a href="#" class="num" id="p11">11</a>
+                                <span class="txt">백도금 Ni-St: 1 </span>
+                            </li>
+                            <li class="num_li12">
+                                <a href="#" class="num" id="p12">12</a>
+                                <span class="txt">백도금 Ni-St: 1 </span>
+                            </li>
+                        </ul>
+                        <span class="figure"><img src="../images/m_img1.png" alt=""></span>
+                    </div>
+
+                </div>
+                <!-- e:공정명 -->
+                <div class="list_wrap">
+                    <!-- s:정류기현황 -->
+                    <div class="rectifier_wrap">
+                        <div class="h2__wrap d-flex between">
+                            <h2 class="h2_comm">정류기 현황</h2>
+                            <a href="#" class="btn_view_all" id="showModal">전체보기</a>
+                        </div>
+
+                        <!-- s:table -->                        
+                        <div class="bbs">
+                            <table class="b-list" id="rectifieTable">
+                                <caption>정류기 현황</caption>
+                                <colgroup>
+                                    <col style="width:12.5%">
+                                    <col style="width:12.5%">
+                                    <col style="width:12.5%">
+                                    <col style="width:12.5%">
+                                    <col style="width:12.5%">
+                                    <col style="width:12.5%">
+                                    <col style="width:12.5%">
+                                    <col style="width:12.5%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">공정명</th>
+                                        <th scope="col">정류기 번호</th>
+                                        <th scope="col">상태</th>
+                                        <th scope="col">입력전압(V)</th>
+                                        <th scope="col">입력전류(A)</th>
+                                        <th scope="col">내부온도(℃)</th>
+                                        <th scope="col">외부온도(℃)</th>
+                                        <th scope="col">외부습도(%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <tr>
+                                        <td><span class="alert_box">Etching</span></td>
+                                        <td>1</td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_btm">Cu Plating</span></td>
+                                        <td>2</td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_two">Cu Plating</span></td>
+                                        <td>3</td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_up">Cu Plating</span></td>
+                                        <td>4</td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_btm">반광택 Ni A</span></td>
+                                        <td>5</td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_up">반광택 Ni A</span></td>
+                                        <td>6</td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_up">반광택 Ni A</span></td>
+                                        <td>7</td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_up">반광택 Ni A</span></td>
+                                        <td>7</td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_up">반광택 Ni A</span></td>
+                                        <td>7</td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_up">반광택 Ni A</span></td>
+                                        <td>7</td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- e:table -->
+                    </div>
+                    <!-- e:정류기현황 -->
+                    <!-- s:컴프레셔 현황 -->
+                    <div class="compressor_wrap mt10">
+                        <h2 class="h2_comm">컴프레셔 현황</h2>
+                        <!-- s:table -->
+                        <div class="bbs">
+                            <table class="b-list" id="compressorTable">
+                                <caption>컴프레셔 현황</caption>
+                                <colgroup>
+                                    <col style="width:12%">
+                                    <col>
+                                    <col style="width:15%">
+                                    <col style="width:15%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">이름</th>
+                                        <th scope="col">넘버</th>
+                                        <th scope="col">상태</th>
+                                        <th scope="col">내부압력</th>
+                                        <th scope="col">내부온도(℃)</th>
+                                        <th scope="col">내부RPM</th>
+                                        <th scope="col">외부온도(℃)</th>
+                                        <th scope="col">외부습도(%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <tr>
+                                        <td><span class="alert_box line_btm">메인1</span></td>
+                                        <td>5</td>
+                                        <td><span class="alert_box bg_green">운전</span></td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_up">메인2</span></td>
+                                        <td>5</td>
+                                        <td><span class="alert_box bg_red">고장</span></td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_up">서브</span></td>
+                                        <td>5</td>
+                                        <td><span class="alert_box bg_gray">정지</span></td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_up">서브</span></td>
+                                        <td>5</td>
+                                        <td><span class="alert_box bg_gray">정지</span></td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="alert_box line_up">서브</span></td>
+                                        <td>5</td>
+                                        <td><span class="alert_box bg_gray">정지</span></td>
+                                        <td><span class="color_red">379.2</span></td>
+                                        <td><span class="color_blue">2.5</span></td>
+                                        <td>35.7</td>
+                                        <td>33.5</td>
+                                        <td>45.7</td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- e:table -->
+                    </div>
+                    <!-- e:컴프레셔 현황 -->
+                </div>
+            </div>
+            <div class="down_content mt10 mb20">
+                <!-- s:제품 추적이력관리 -->
+                <div class="tracking_history_wrap">
+                    <div class="d-flex h2__wrap">
+                        <h2 class="h2_comm">제품 추적이력관리</h2>
+                        <div class="alert_wrap">
+                            <span class="alert_box bg_green">대기</span>
+                            <span class="alert_box bg_blue">진행중</span>
+                            <span class="alert_box bg_dgray">완료</span>
+                        </div>
+                    </div>
+
+                    <!-- s:table -->
+                    <div class="bbs table_two">
+                        <ul class="bbs-left" id="historyLeft">
+                            <li id="historyLeftHead">
+                                <strong>활성</strong>
+                                <strong>소재</strong>
+                            </li>
+                            <!-- <li>
+                                <span class="alert_box bg_green">5</span>
+                                <span>Bar 316</span>
+                            </li>
+                            <li>
+                                <span class="alert_box bg_blue">4</span>
+                                <span>Bar 316</span>
+                            </li>
+                            <li>
+                                <span class="alert_box bg_blue">4</span>
+                                <span>Bar 316</span>
+                            </li>
+                            <li>
+                                <span class="alert_box bg_dgray">2</span>
+                                <span>Bar 316</span>
+                            </li>
+                            <li>
+                                <span class="alert_box bg_green">1</span>
+                                <span>Bar 316</span>
+                            </li>
+                            <li>
+                                <span class="alert_box bg_green">1</span>
+                                <span>Bar 316</span>
+                            </li>
+                            <li>
+                                <span class="alert_box bg_green">1</span>
+                                <span>Bar 316</span>
+                            </li>
+                            <li>
+                                <span class="alert_box bg_green">1</span>
+                                <span>Bar 316</span>
+                            </li> -->
+                        </ul>
+                        <!-- 제품이 늘어나면 width값을 조절하시면 됩니다. -->
+                        <div class="bbs-right">
+                            <table class="b-manager" style="width:2500px;" id="historyTable">
+                                <caption>제품 추적이력관리</caption>
+                                <!-- <colgroup>
+                                    <col style="width:12%">
+                                    <col style="width:*">
+                                    <col style="width:15%">
+                                    <col style="width:15%">
+                                </colgroup> -->
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="dark_gray rline">Etching</th>
+                                        <th scope="col" colspan="2" class="rline">Cu Plating</th>
+                                        <th scope="col" colspan="3" class="dark_gray rline">반광택 Ni A</th>
+                                        <th scope="col" colspan="2" class="rline">반광택 Ni B</th>
+                                        <th scope="col" colspan="4" class="dark_gray rline">박도금 Ni-St</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="dark_gray rline">정류기-01</th>
+                                        <th>정류기-02</th>
+                                        <th class="rline">정류기-03</th>
+                                        <th class="dark_gray">정류기-04</th>
+                                        <th class="dark_gray">정류기-05</th>
+                                        <th class="dark_gray rline">정류기-06</th>
+                                        <th>정류기-07</th>
+                                        <th class="rline">정류기-08</th>
+                                        <th class="dark_gray">정류기-09</th>
+                                        <th class="dark_gray">정류기-10</th>
+                                        <th class="dark_gray">정류기-11</th>
+                                        <th class="dark_gray rline">정류기-12</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <tr>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td>&nbsp;</td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                    </tr>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td>&nbsp;</td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td>&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td>&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td>&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td>&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td><img src="../images/gallery_img.png" alt=""></td>
+                                        <td>&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                        <td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>
+                                        <td class="dark_gray">&nbsp;</td>
+                                    </tr> -->
+                            </table>
+                        </div>
+                        
+                    </div>
+                    <!-- e:table -->
+                </div>
+                <!-- e:제품 추적이력관리 -->
+            </div>
+        </main>
+    </div>
+
+    <!-- 상세 다이얼로그 -->
+    <div id="dialog-form" title="이력상세">
+      <div class="historyDialog_wrap">
+        <div class="h2__wrap d-flex between">
+          <h2 class="h2_comm">이력 리스트</h2>
+          <a href="#" class="btn_view_all" id="showModal">전체보기</a>
+        </div>
+
+        <!-- s:table -->                        
+        <div class="bbs">
+          <table class="b-list">
+              <caption>상세보기</caption>
+              <colgroup>
+                  <col style="width:12.5%">
+                  <col style="width:12.5%">
+                  <col style="width:12.5%">
+                  <col style="width:12.5%">
+                  <col style="width:12.5%">
+                  <col style="width:12.5%">
+                  <col style="width:12.5%">
+                  <col style="width:12.5%">
+              </colgroup>
+              <thead>
+                  <tr>
+                      <th scope="col">공정명</th>
+                      <th scope="col">정류기 번호</th>
+                      <th scope="col">상태</th>
+                      <th scope="col">입력전압(V)</th>
+                      <th scope="col">입력전류(A)</th>
+                      <th scope="col">내부온도(℃)</th>
+                      <th scope="col">외부온도(℃)</th>
+                      <th scope="col">외부습도(%)</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td><span class="alert_box">Etching</span></td>
+                      <td>1</td>
+                      <td><span class="alert_box bg_green">운전</span></td>
+                      <td><span class="color_red">379.2</span></td>
+                      <td><span class="color_blue">2.5</span></td>
+                      <td>35.7</td>
+                      <td>33.5</td>
+                      <td>45.7</td>
+                  </tr>
+                  <tr>
+                      <td><span class="alert_box line_btm">Cu Plating</span></td>
+                      <td>2</td>
+                      <td><span class="alert_box bg_green">운전</span></td>
+                      <td><span class="color_red">379.2</span></td>
+                      <td><span class="color_blue">2.5</span></td>
+                      <td>35.7</td>
+                      <td>33.5</td>
+                      <td>45.7</td>
+                  </tr>
+                  <tr>
+                      <td><span class="alert_box line_two">Cu Plating</span></td>
+                      <td>3</td>
+                      <td><span class="alert_box bg_green">운전</span></td>
+                      <td><span class="color_red">379.2</span></td>
+                      <td><span class="color_blue">2.5</span></td>
+                      <td>35.7</td>
+                      <td>33.5</td>
+                      <td>45.7</td>
+                  </tr>
+                  <tr>
+                      <td><span class="alert_box line_up">Cu Plating</span></td>
+                      <td>4</td>
+                      <td><span class="alert_box bg_green">운전</span></td>
+                      <td><span class="color_red">379.2</span></td>
+                      <td><span class="color_blue">2.5</span></td>
+                      <td>35.7</td>
+                      <td>33.5</td>
+                      <td>45.7</td>
+                  </tr>
+                  <tr>
+                      <td><span class="alert_box line_btm">반광택 Ni A</span></td>
+                      <td>5</td>
+                      <td><span class="alert_box bg_green">운전</span></td>
+                      <td><span class="color_red">379.2</span></td>
+                      <td><span class="color_blue">2.5</span></td>
+                      <td>35.7</td>
+                      <td>33.5</td>
+                      <td>45.7</td>
+                  </tr>
+                  <tr>
+                      <td><span class="alert_box line_up">반광택 Ni A</span></td>
+                      <td>6</td>
+                      <td><span class="alert_box bg_green">운전</span></td>
+                      <td><span class="color_red">379.2</span></td>
+                      <td><span class="color_blue">2.5</span></td>
+                      <td>35.7</td>
+                      <td>33.5</td>
+                      <td>45.7</td>
+                  </tr>
+                  <tr>
+                      <td><span class="alert_box line_up">반광택 Ni A</span></td>
+                      <td>7</td>
+                      <td><span class="alert_box bg_green">운전</span></td>
+                      <td><span class="color_red">379.2</span></td>
+                      <td><span class="color_blue">2.5</span></td>
+                      <td>35.7</td>
+                      <td>33.5</td>
+                      <td>45.7</td>
+                  </tr>
+                  <tr>
+                      <td><span class="alert_box line_up">반광택 Ni A</span></td>
+                      <td>7</td>
+                      <td><span class="alert_box bg_green">운전</span></td>
+                      <td><span class="color_red">379.2</span></td>
+                      <td><span class="color_blue">2.5</span></td>
+                      <td>35.7</td>
+                      <td>33.5</td>
+                      <td>45.7</td>
+                  </tr>
+                  <tr>
+                      <td><span class="alert_box line_up">반광택 Ni A</span></td>
+                      <td>7</td>
+                      <td><span class="alert_box bg_green">운전</span></td>
+                      <td><span class="color_red">379.2</span></td>
+                      <td><span class="color_blue">2.5</span></td>
+                      <td>35.7</td>
+                      <td>33.5</td>
+                      <td>45.7</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+        <!-- e:table -->
+    </div>
+    </div>
+</body>
+</html>
