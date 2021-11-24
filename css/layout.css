@@ -273,12 +273,17 @@ hr.line {
   color: #fff;
 }
 .alert_box.bg_red {
-  background: #e46a76;
+  background: #e23e4e;
   border-radius: 15px;
   color: #fff;
 }
 .alert_box.bg_yellow {
-  background: #dac155;
+  background: #ffe260;
+  border-radius: 15px;
+  color: #fff;
+}
+.alert_box.bg_orange {
+  background: #ff812d;
   border-radius: 15px;
   color: #fff;
 }
@@ -601,6 +606,16 @@ select::-ms-expand {
 .num_explain li > a.on,
 .num_explain li > a.num:hover {
   background: #00c292;
+  color: #fff;
+}
+.num_explain li > a.alert {
+  background: #e6d91f;
+  border: 1px solid #e6d327;
+  color: #fff;
+}
+.num_explain li > a.broken {
+  background: #e72121;
+  border: 1px solid #e62d27;
   color: #fff;
 }
 .num_explain li > .txt {

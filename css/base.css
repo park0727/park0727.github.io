@@ -116,3 +116,6 @@ html, body { font-weight:400; color:#565656; line-height:1; word-break:keep-all;
 *:before,*:after {box-sizing: border-box}
 label { margin-bottom:0 !important; }
 textarea { border: 1px solid #C6CEDA; border-radius: 8px; padding: 1em; }
+
+@keyframes blink-effect { 50% { opacity: 0; } }
+.blink { animation: blink-effect 1s step-end infinite; }

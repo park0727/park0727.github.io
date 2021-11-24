@@ -1,0 +1,40 @@
+materialData1 = [
+  {"material" : "Bar 316", "progressNo" : 1, "status" : "run", "progressName" : "Etching", "rectifierNo" : 1, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 317", "progressNo" : 0, "status" : "stop", "progressName" : "", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 318", "progressNo" : 0, "status" : "stop", "progressName" : "", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+]
+materialData2 = [
+  {"material" : "Bar 316", "progressNo" : 2, "status" : "run", "progressName" : "Cu Plating", "rectifierNo" : 3, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 317", "progressNo" : 1, "status" : "run", "progressName" : "Etching", "rectifierNo" : 1, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 318", "progressNo" : 0, "status" : "stop", "progressName" : "", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+]
+materialData3 = [
+  {"material" : "Bar 316", "progressNo" : 3, "status" : "run", "progressName" : "반광택 Ni A", "rectifierNo" : 5, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 317", "progressNo" : 2, "status" : "run", "progressName" : "Cu Plating", "rectifierNo" : 2, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 318", "progressNo" : 1, "status" : "run", "progressName" : "Etching", "rectifierNo" : 1, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+]
+materialData4 = [
+  {"material" : "Bar 316", "progressNo" : 4, "status" : "run", "progressName" : "반광택 Ni B", "rectifierNo" : 7, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 317", "progressNo" : 3, "status" : "run", "progressName" : "반광택 Ni A", "rectifierNo" : 5, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 318", "progressNo" : 2, "status" : "run", "progressName" : "Cu Plating", "rectifierNo" : 3, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+]
+materialData5 = [
+  {"material" : "Bar 316", "progressNo" : 0, "status" : "run", "progressName" : "백도금 Ni-St", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 317", "progressNo" : 4, "status" : "run", "progressName" : "반광택 Ni B", "rectifierNo" : 8, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 318", "progressNo" : 3, "status" : "run", "progressName" : "반광택 Ni A", "rectifierNo" : 6, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+]
+materialData6 = [
+  {"material" : "Bar 316", "progressNo" : 0, "status" : "complete", "progressName" : "", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 317", "progressNo" : 0, "status" : "run", "progressName" : "백도금 Ni-St", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 318", "progressNo" : 4, "status" : "run", "progressName" : "반광택 Ni B", "rectifierNo" : 8, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+]
+materialData7 = [
+  {"material" : "Bar 316", "progressNo" : 0, "status" : "complete", "progressName" : "", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 317", "progressNo" : 0, "status" : "complete", "progressName" : "", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 318", "progressNo" : 0, "status" : "run", "progressName" : "백도금 Ni-St", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+]
+materialData8 = [
+  {"material" : "Bar 316", "progressNo" : 0, "status" : "complete", "progressName" : "", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 317", "progressNo" : 0, "status" : "complete", "progressName" : "", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+  {"material" : "Bar 318", "progressNo" : 0, "status" : "complete", "progressName" : "", "rectifierNo" : 0, "inputVoltage" : 379.2, "inputCurrent" : 2.5, "insideTemp" : 35.7, "outsideTemp" : 33.5, "outsideHumidity" : 45.7},
+]

@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="../css/jquery-ui.css">
     <script src="../js/jquery-3.6.0.js"></script>
     <script src="../js/jquery-ui.js"></script>
-    <script type="text/javascript" src="../data/data3.json"></script>
+    <script type="text/javascript" src="../data/materialData.json"></script>
+    <script type="text/javascript" src="../data/progressData.json"></script>
     <script type="text/javascript" src="../data/rectifieData.json"></script>
     <script type="text/javascript">
       $((function() {
@@ -29,23 +30,29 @@
 
         loadJsonData(1);
 
-        var startFlag = "E";
+        var startFlag = "stop";
         var callAPI;
 
         $('#header').click(function() {
           
-          if(startFlag == "E") {
-            startFlag = "S";
+          if(startFlag == "stop") {
+            startFlag = "running";
 
             console.log("start call API");
             var loadCnt = 2;
 
             callAPI = setInterval(() => {
               loadJsonData(loadCnt);
-              loadCnt < 13 ? loadCnt++ : loadCnt = 0;
+
+              if(loadCnt == 8) {
+                startFlag = "stop";
+                clearInterval(callAPI);
+              } else {
+                loadCnt < 8 ? loadCnt++ : loadCnt = 1;
+              }
             }, 3000);
           } else {
-            startFlag = "E";
+            startFlag = "stop";
             clearInterval(callAPI);
             console.log("stop call API");
           }
@@ -119,7 +126,7 @@
               break;
           }
 
-          // 정류기 히스토리 테이블 기존 데이터 삭제
+          // 정류기 히스토리 팝업 테이블 기존 데이터 삭제
           $('#rectifieHistoryTable').children('tbody').empty();
 
           for(var idx in rectifieHistoryList) {
@@ -140,7 +147,7 @@
             if(rectifieHistoryList[idx].status == "normal") {
               statusCol = '<td><span class="alert_box bg_green">정상</span></td>';
             } else if(rectifieHistoryList[idx].status == "warning") {
-              statusCol = '<td><span class="alert_box bg_yellow">주의</span></td>';
+              statusCol = '<td><span class="alert_box bg_orange">주의</span></td>';
             } else if(rectifieHistoryList[idx].status == "broken") {
               statusCol = '<td><span class="alert_box bg_red">고장</span></td>';
             }
@@ -166,34 +173,43 @@
       }));
 
       function loadJsonData(count) {
-        var dataList;
+        var progressList;
+        var materialList;
 
         switch (count) {
           case 1:
-            dataList = JSON.parse(JSON.stringify(progressData1));
+            progressList = JSON.parse(JSON.stringify(progressData1));
+            materialList = JSON.parse(JSON.stringify(materialData1));
             break;
           case 2:
-            dataList = JSON.parse(JSON.stringify(progressData2));
+            progressList = JSON.parse(JSON.stringify(progressData2));
+            materialList = JSON.parse(JSON.stringify(materialData2));
             break;
           case 3:
-            dataList = JSON.parse(JSON.stringify(progressData3));
+            progressList = JSON.parse(JSON.stringify(progressData3));
+            materialList = JSON.parse(JSON.stringify(materialData3));
             break;
           case 4:
-            dataList = JSON.parse(JSON.stringify(progressData4));
+            progressList = JSON.parse(JSON.stringify(progressData4));
+            materialList = JSON.parse(JSON.stringify(materialData4));
             break;
           case 5:
-            dataList = JSON.parse(JSON.stringify(progressData5));
+            progressList = JSON.parse(JSON.stringify(progressData5));
+            materialList = JSON.parse(JSON.stringify(materialData5));
             break;
           case 6:
-            dataList = JSON.parse(JSON.stringify(progressData6));
+            progressList = JSON.parse(JSON.stringify(progressData6));
+            materialList = JSON.parse(JSON.stringify(materialData6));
             break;
           case 7:
-            dataList = JSON.parse(JSON.stringify(progressData7));
+            progressList = JSON.parse(JSON.stringify(progressData7));
+            materialList = JSON.parse(JSON.stringify(materialData7));
             break;
           case 8:
-            dataList = JSON.parse(JSON.stringify(progressData8));
+            progressList = JSON.parse(JSON.stringify(progressData8));
+            materialList = JSON.parse(JSON.stringify(materialData8));
             break;
-          case 9:
+          /* case 9:
             dataList = JSON.parse(JSON.stringify(progressData9));
             break;
           case 10:
@@ -207,15 +223,19 @@
             break;
           case 13:
             dataList = JSON.parse(JSON.stringify(progressData12));
-            break;
+            break; */
         }
 
         // console.log(dataList);
         // 차후 ajax를 통한 data load 후 dataList 전달
-        setData(dataList);
+
+        // 정류기 별 진행현황 데이터 리스트로 정류기 현황을 그림
+        drawRecitfieData(progressList);
+        // 소재 별 흐름 데이터 리스트로 제품 추적히스토리 그림
+        drawHistory(materialList);
       }
 
-      function setData(dataList) {
+      function drawRecitfieData(dataList) {
         // 정류기 수
         // $('#rectifierCount').text(dataList.length + "대")
         
@@ -245,7 +265,7 @@
         $('#rectifieTable').children('tbody').empty();
 
         // 공정 수
-        var runningCnt = 0;
+        // var runningCnt = 0;
 
         for(var idx in dataList) {
 
@@ -260,85 +280,33 @@
           // 실행중인 공정 아이콘 색상 표시
           if(dataList[idx].status == "run") {
             $('#p'+dataList[idx].rectifierNo).addClass('on');
+            $('#p'+dataList[idx].rectifierNo).removeClass('alert');
+            $('#p'+dataList[idx].rectifierNo).removeClass('broken');
+            $('#p'+dataList[idx].rectifierNo).removeClass('blink');
             statusCol = '<td><span class="alert_box bg_green">운전</span></td>';
             inputVoltage = getRandom(350, 400).toFixed(2);
             inputCurrent = getRandom(1, 4).toFixed(2);
-            runningCnt++;
-
-            var rno = dataList[idx].rectifierNo;
-            var col1 = '<td class="dark_gray">&nbsp;</td>';
-            var col2 = '<td>&nbsp;</td>';
-            var col3 = '<td>&nbsp;</td>';
-            var col4 = '<td class="dark_gray">&nbsp;</td>';
-            var col5 = '<td class="dark_gray">&nbsp;</td>';
-            var col6 = '<td class="dark_gray">&nbsp;</td>';
-            var col7 = '<td>&nbsp;</td>';
-            var col8 = '<td>&nbsp;</td>';
-            var col9 = '<td class="dark_gray">&nbsp;</td>';
-            var col10 = '<td class="dark_gray">&nbsp;</td>';
-            var col11 = '<td class="dark_gray">&nbsp;</td>';
-            var col12 = '<td class="dark_gray">&nbsp;</td>';
-
-            switch(rno) {
-              case 1:
-              col1 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 2:
-              col2 = '<td><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 3:
-              col3 = '<td><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 4:
-              col4 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 5:
-              col5 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 6:
-              col6 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 7:
-              col7 = '<td><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 8:
-              col8 = '<td><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 9:
-              col9 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 10:
-              col10 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 11:
-              col11 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-              case 12:
-              col12 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
-              break;
-            }
-
-            // 제품 추적이력관리 데이터 추가
-            $('#historyLeft').append(
-                          '<li class="addedData">' +
-                            '<span class="alert_box bg_green">5</span>' +
-                            '<span>' + dataList[idx].material + '</span>' +
-                          '</li>'
-            );
-            $('#historyTable').children('tbody').append(
-                          '<tr>' +
-                            col1 + col2 + col3 + col4 + col5 + col6 + col7 + col8 + col9 + col10 + col11 + col12 +
-                          '</tr>'
-            )
-
+            // runningCnt++;
           } else if(dataList[idx].status == "stop") {
             $('#p'+dataList[idx].rectifierNo).removeClass('on');
+            $('#p'+dataList[idx].rectifierNo).removeClass('alert');
+            $('#p'+dataList[idx].rectifierNo).removeClass('broken');
+            $('#p'+dataList[idx].rectifierNo).removeClass('blink');
             statusCol = '<td><span class="alert_box bg_gray">정지</span></td>';
             inputVoltage = "-";
             inputCurrent = "-";
-          } else {
+          } else if(dataList[idx].status == "alert") {
             $('#p'+dataList[idx].rectifierNo).removeClass('on');
-            statusCol = '<td><span class="alert_box bg_red">고장</span></td>';
+            $('#p'+dataList[idx].rectifierNo).removeClass('broken');
+            $('#p'+dataList[idx].rectifierNo).addClass('alert blink');
+            statusCol = '<td><span class="alert_box bg_yellow blink">주의</span></td>';
+            inputVoltage = "-";
+            inputCurrent = "-";
+          } else if(dataList[idx].status == "broken") {
+            $('#p'+dataList[idx].rectifierNo).removeClass('on');
+            $('#p'+dataList[idx].rectifierNo).removeClass('alert');
+            $('#p'+dataList[idx].rectifierNo).addClass('broken blink');
+            statusCol = '<td><span class="alert_box bg_red blink">고장</span></td>';
             inputVoltage = "-";
             inputCurrent = "-";
           }
@@ -363,9 +331,89 @@
 
         // 공정 수
         // console.log(runningCnt);
-        $('#progressCount').text(runningCnt + "개")
+        // $('#progressCount').text(runningCnt + "개")
 
         // $('#p1').addClass("on");
+      }
+
+      function drawHistory(dataList) {
+
+        for(var idx in dataList) {
+          var rno = dataList[idx].rectifierNo;
+          var col1 = '<td class="dark_gray">&nbsp;</td>';
+          var col2 = '<td>&nbsp;</td>';
+          var col3 = '<td>&nbsp;</td>';
+          var col4 = '<td class="dark_gray">&nbsp;</td>';
+          var col5 = '<td class="dark_gray">&nbsp;</td>';
+          var col6 = '<td class="dark_gray">&nbsp;</td>';
+          var col7 = '<td>&nbsp;</td>';
+          var col8 = '<td>&nbsp;</td>';
+          var col9 = '<td class="dark_gray">&nbsp;</td>';
+          var col10 = '<td class="dark_gray">&nbsp;</td>';
+          var col11 = '<td class="dark_gray">&nbsp;</td>';
+          var col12 = '<td class="dark_gray">&nbsp;</td>';
+
+          switch(rno) {
+            case 1:
+            col1 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 2:
+            col2 = '<td><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 3:
+            col3 = '<td><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 4:
+            col4 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 5:
+            col5 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 6:
+            col6 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 7:
+            col7 = '<td><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 8:
+            col8 = '<td><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 9:
+            col9 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 10:
+            col10 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 11:
+            col11 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+            case 12:
+            col12 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+            break;
+          }
+
+          var bgColor;
+          if(dataList[idx].status == 'run') {
+            bgColor = "bg_blue";
+          } else if(dataList[idx].status == 'stop') {
+            bgColor = "bg_green";
+          } else if(dataList[idx].status == 'complete') {
+            bgColor = "bg_dgray";
+          }
+
+          // 제품 추적이력관리 데이터 추가
+          $('#historyLeft').append(
+                        '<li class="addedData">' +
+                          '<span class="alert_box ' + bgColor + '">' + dataList[idx].rectifierNo + '</span>' +
+                          '<span>' + dataList[idx].material + '</span>' +
+                        '</li>'
+          );
+          $('#historyTable').children('tbody').append(
+                        '<tr>' +
+                          col1 + col2 + col3 + col4 + col5 + col6 + col7 + col8 + col9 + col10 + col11 + col12 +
+                        '</tr>'
+          )
+        }
       }
 
       function getRandom(min, max) {
@@ -397,7 +445,7 @@
                         </li>
                         <li>
                             <strong>공정수:</strong>
-                            <p id="progressCount">0개</p>
+                            <p id="progressCount">5개</p>
                         </li>
                         <li>
                             <strong>정류기 :</strong>
@@ -408,51 +456,51 @@
                         <ul class="num_explain">
                             <li class="num_li01">
                                 <a href="#" class="num on" id="p1">1</a>
-                                <span class="txt">Etching: 1</span>
+                                <span class="txt">Etching</span>
                             </li>
                             <li class="num_li02">
                                 <a href="#" class="num" id="p2">2</a>
-                                <span class="txt">Cu Plating: 12</span>
+                                <span class="txt">Cu Plating</span>
                             </li>
                             <li class="num_li03">
                                 <a href="#" class="num" id="p3">3</a>
-                                <span class="txt">Cu Plating: 4</span>
+                                <span class="txt">Cu Plating</span>
                             </li>
                             <li class="num_li04">
                                 <a href="#" class="num" id="p4">4</a>
-                                <span class="txt">반광택 Ni A: 3</span>
+                                <span class="txt">반광택 Ni A</span>
                             </li>
                             <li class="num_li05">
                                 <a href="#" class="num" id="p5">5</a>
-                                <span class="txt">반광택 Ni A: 1</span>
+                                <span class="txt">반광택 Ni A</span>
                             </li>
                             <li class="num_li06">
                                 <a href="#" class="num" id="p6">6</a>
-                                <span class="txt">반광택 Ni A: 3</span>
+                                <span class="txt">반광택 Ni A</span>
                             </li>
                             <li class="num_li07">
                                 <a href="#" class="num" id="p7">7</a>
-                                <span class="txt">반광택 Ni B: 5</span>
+                                <span class="txt">반광택 Ni B</span>
                             </li>
                             <li class="num_li08">
                                 <a href="#" class="num" id="p8">8</a>
-                                <span class="txt">반광택 Ni B: 2</span>
+                                <span class="txt">반광택 Ni B</span>
                             </li>
                             <li class="num_li09">
                                 <a href="#" class="num" id="p9">9</a>
-                                <span class="txt">백도금 Ni-St: 1</span>
+                                <span class="txt">백도금 Ni-St</span>
                             </li>
                             <li class="num_li10">
                                 <a href="#" class="num" id="p10">10</a>
-                                <span class="txt">백도금 Ni-St: 2</span>
+                                <span class="txt">백도금 Ni-St</span>
                             </li>
                             <li class="num_li11">
                                 <a href="#" class="num" id="p11">11</a>
-                                <span class="txt">백도금 Ni-St: 1 </span>
+                                <span class="txt">백도금 Ni-St</span>
                             </li>
                             <li class="num_li12">
                                 <a href="#" class="num" id="p12">12</a>
-                                <span class="txt">백도금 Ni-St: 1 </span>
+                                <span class="txt">백도금 Ni-St</span>
                             </li>
                         </ul>
                         <span class="figure"><img src="../images/m_img1.png" alt=""></span>
