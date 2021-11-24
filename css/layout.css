@@ -277,6 +277,11 @@ hr.line {
   border-radius: 15px;
   color: #fff;
 }
+.alert_box.bg_yellow {
+  background: #dac155;
+  border-radius: 15px;
+  color: #fff;
+}
 .alert_box.bg_gray {
   background: #a7a7a7;
   border-radius: 15px;
