@@ -138,7 +138,7 @@
             var outsideHumidity;
             var statusCol;
 
-            inputVoltage = getRandom(350, 400).toFixed(2);
+            inputVoltage = getRandom(10, 12).toFixed(2);
             inputCurrent = getRandom(1, 4).toFixed(2);
             insideTemp = getRandom(22, 40).toFixed(2);
             outsideTemp = getRandom(20, 30).toFixed(2);
@@ -148,8 +148,10 @@
               statusCol = '<td><span class="alert_box bg_green">정상</span></td>';
             } else if(rectifieHistoryList[idx].status == "warning") {
               statusCol = '<td><span class="alert_box bg_orange">주의</span></td>';
+              inputVoltage = getRandom(12, 13).toFixed(2);
             } else if(rectifieHistoryList[idx].status == "broken") {
               statusCol = '<td><span class="alert_box bg_red">고장</span></td>';
+              inputVoltage = getRandom(12, 14).toFixed(2);
             }
 
             // 정류기 히스토리 테이블 업데이트
@@ -284,7 +286,7 @@
             $('#p'+dataList[idx].rectifierNo).removeClass('broken');
             $('#p'+dataList[idx].rectifierNo).removeClass('blink');
             statusCol = '<td><span class="alert_box bg_green">운전</span></td>';
-            inputVoltage = getRandom(350, 400).toFixed(2);
+            inputVoltage = getRandom(10, 13).toFixed(2);
             inputCurrent = getRandom(1, 4).toFixed(2);
             // runningCnt++;
           } else if(dataList[idx].status == "stop") {
