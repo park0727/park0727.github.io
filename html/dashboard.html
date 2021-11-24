@@ -44,11 +44,11 @@
             callAPI = setInterval(() => {
               loadJsonData(loadCnt);
 
-              if(loadCnt == 8) {
+              if(loadCnt == 4) {
                 startFlag = "stop";
                 clearInterval(callAPI);
               } else {
-                loadCnt < 8 ? loadCnt++ : loadCnt = 1;
+                loadCnt < 4 ? loadCnt++ : loadCnt = 1;
               }
             }, 3000);
           } else {
@@ -85,95 +85,98 @@
 
           console.log("선택된 정류기 번호 : " + selectedNo);
 
-          var rectifieHistoryList;
-
-          switch (selectedNo) {
-            case "1":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData1));
-              break;
-            case "2":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData2));
-              break;
-            case "3":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData3));
-              break;
-            case "4":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData4));
-              break;
-            case "5":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData5));
-              break;
-            case "6":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData6));
-              break;
-            case "7":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData7));
-              break;
-            case "8":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData8));
-              break;
-            case "9":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData9));
-              break;
-            case "10":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData10));
-              break;
-            case "11":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData11));
-              break;
-            case "12":
-              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData12));
-              break;
-          }
-
-          // 정류기 히스토리 팝업 테이블 기존 데이터 삭제
-          $('#rectifieHistoryTable').children('tbody').empty();
-
-          for(var idx in rectifieHistoryList) {
-
-            var inputVoltage;
-            var inputCurrent;
-            var insideTemp;
-            var outsideTemp;
-            var outsideHumidity;
-            var statusCol;
-
-            inputVoltage = getRandom(10, 12).toFixed(2);
-            inputCurrent = getRandom(1, 4).toFixed(2);
-            insideTemp = getRandom(22, 40).toFixed(2);
-            outsideTemp = getRandom(20, 30).toFixed(2);
-            outsideHumidity = getRandom(32, 70).toFixed(2);
-
-            if(rectifieHistoryList[idx].status == "normal") {
-              statusCol = '<td><span class="alert_box bg_green">정상</span></td>';
-            } else if(rectifieHistoryList[idx].status == "warning") {
-              statusCol = '<td><span class="alert_box bg_orange">주의</span></td>';
-              inputVoltage = getRandom(12, 13).toFixed(2);
-            } else if(rectifieHistoryList[idx].status == "broken") {
-              statusCol = '<td><span class="alert_box bg_red">고장</span></td>';
-              inputVoltage = getRandom(12, 14).toFixed(2);
-            }
-
-            // 정류기 히스토리 테이블 업데이트
-            $('#rectifieHistoryTable').children('tbody').append(
-                        '<tr>'+
-                          '<td>' + rectifieHistoryList[idx].date + '</td>'+
-                          '<td><span class="alert_box">' + rectifieHistoryList[idx].progressName + '</span></td>'+
-                          '<td>' + rectifieHistoryList[idx].rectifierNo + '</td>'+
-                          statusCol +
-                          '<td><span class="color_red">' + inputVoltage + '</span></td>'+
-                          '<td><span class="color_blue">' + inputCurrent + '</span></td>'+
-                          '<td>' + insideTemp + '</td>'+
-                          '<td>' + outsideTemp + '</td>'+
-                          '<td>' + outsideHumidity + '</td>'+
-                        '</tr>');
-          }
-
-
-          dialog.dialog("open");
+          drawModal(selectedNo);
         });
       }));
 
+      function drawModal(selectedNo) {
+        var rectifieHistoryList;
+
+        switch (selectedNo) {
+          case "1":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData1));
+            break;
+          case "2":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData2));
+            break;
+          case "3":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData3));
+            break;
+          case "4":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData4));
+            break;
+          case "5":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData5));
+            break;
+          case "6":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData6));
+            break;
+          case "7":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData7));
+            break;
+          case "8":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData8));
+            break;
+          case "9":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData9));
+            break;
+          case "10":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData10));
+            break;
+          case "11":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData11));
+            break;
+          case "12":
+            rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData12));
+            break;
+        }
+
+        // 정류기 히스토리 팝업 테이블 기존 데이터 삭제
+        $('#rectifieHistoryTable').children('tbody').empty();
+
+        for(var idx in rectifieHistoryList) {
+
+          var inputVoltage;
+          var inputCurrent;
+          var insideTemp;
+          var outsideTemp;
+          var outsideHumidity;
+          var statusCol;
+
+          inputVoltage = getRandom(10, 12).toFixed(2);
+          inputCurrent = getRandom(1, 4).toFixed(2);
+          insideTemp = getRandom(22, 40).toFixed(2);
+          outsideTemp = getRandom(20, 30).toFixed(2);
+          outsideHumidity = getRandom(32, 70).toFixed(2);
+
+          if(rectifieHistoryList[idx].status == "normal") {
+            statusCol = '<td><span class="alert_box bg_green">정상</span></td>';
+          } else if(rectifieHistoryList[idx].status == "warning") {
+            statusCol = '<td><span class="alert_box bg_orange">주의</span></td>';
+            inputVoltage = getRandom(12, 13).toFixed(2);
+          } else if(rectifieHistoryList[idx].status == "broken") {
+            statusCol = '<td><span class="alert_box bg_red">고장</span></td>';
+            inputVoltage = getRandom(12, 14).toFixed(2);
+          }
+
+          // 정류기 히스토리 팝업 테이블 업데이트
+          $('#rectifieHistoryTable').children('tbody').append(
+                      '<tr>'+
+                        '<td>' + rectifieHistoryList[idx].date + '</td>'+
+                        '<td><span class="alert_box">' + rectifieHistoryList[idx].progressName + '</span></td>'+
+                        '<td>' + rectifieHistoryList[idx].rectifierNo + '</td>'+
+                        statusCol +
+                        '<td><span class="color_red">' + inputVoltage + '</span></td>'+
+                        '<td><span class="color_blue">' + inputCurrent + '</span></td>'+
+                        '<td>' + insideTemp + '</td>'+
+                        '<td>' + outsideTemp + '</td>'+
+                        '<td>' + outsideHumidity + '</td>'+
+                      '</tr>');
+        }
+
+
+        dialog.dialog("open");
+      }
       function loadJsonData(count) {
         var progressList;
         var materialList;
@@ -301,7 +304,7 @@
             $('#p'+dataList[idx].rectifierNo).removeClass('on');
             $('#p'+dataList[idx].rectifierNo).removeClass('broken');
             $('#p'+dataList[idx].rectifierNo).addClass('alert blink');
-            statusCol = '<td><span class="alert_box bg_yellow blink">주의</span></td>';
+            statusCol = '<td><span class="alert_box bg_orange blink">주의</span></td>';
             inputVoltage = "-";
             inputCurrent = "-";
           } else if(dataList[idx].status == "broken") {
@@ -369,7 +372,11 @@
             col4 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
             break;
             case 5:
-            col5 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+              if(dataList[idx].material == 'Bar 317') {
+                col5 = '<td class="dark_gray"><span class="alert_box bg_orange blink link" onclick="javascript:drawModal(\'5\')">주의</span></td>';
+              } else {
+                col5 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';
+              }
             break;
             case 6:
             col6 = '<td class="dark_gray"><img src="../images/gallery_img.png" alt=""></td>';

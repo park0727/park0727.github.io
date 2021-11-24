@@ -402,6 +402,10 @@ select::-ms-expand {
   border-right: 1px solid #c4c5c6 !important;
 }
 
+.b-manager tbody tr td span.link {
+  cursor: pointer;
+}
+
 /* index */
 #wrap {
   padding: 0 20px;
@@ -609,8 +613,8 @@ select::-ms-expand {
   color: #fff;
 }
 .num_explain li > a.alert {
-  background: #e6d91f;
-  border: 1px solid #e6d327;
+  background: #e66f1f;
+  border: 1px solid #e68327;
   color: #fff;
 }
 .num_explain li > a.broken {
