@@ -10,6 +10,7 @@
     <script src="../js/jquery-3.6.0.js"></script>
     <script src="../js/jquery-ui.js"></script>
     <script type="text/javascript" src="../data/data3.json"></script>
+    <script type="text/javascript" src="../data/rectifieData.json"></script>
     <script type="text/javascript">
       $((function() {
         dialog = $( "#dialog-form" ).dialog({
@@ -50,8 +51,115 @@
           }
         });
 
-        $('#showModal').click(function() {
-          dialog.dialog( "open" );
+        // $('#showModal').click(function() {
+        //   dialog.dialog( "open" );
+        // });
+
+        $(document.body).delegate('#rectifieTable > tbody > tr', 'click', function() {
+          var str = ""
+          var tdArr = new Array();
+          var selectedNo;
+              
+          // 현재 클릭된 Row(<tr>)
+          var tr = $(this);
+          var td = tr.children();
+
+          // tr.text()는 클릭된 Row 즉 tr에 있는 모든 값을 가져옴
+          // console.log("클릭한 Row의 모든 데이터 : "+tr.text());
+            
+          // 배열에 값을 담아 사용
+          // td.each(function(i){
+          //     tdArr.push(td.eq(i).text());
+          // });
+                  
+          // console.log("배열에 담긴 값 : "+tdArr);
+
+          selectedNo = td.eq(1).text();
+
+          console.log("선택된 정류기 번호 : " + selectedNo);
+
+          var rectifieHistoryList;
+
+          switch (selectedNo) {
+            case "1":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData1));
+              break;
+            case "2":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData2));
+              break;
+            case "3":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData3));
+              break;
+            case "4":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData4));
+              break;
+            case "5":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData5));
+              break;
+            case "6":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData6));
+              break;
+            case "7":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData7));
+              break;
+            case "8":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData8));
+              break;
+            case "9":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData9));
+              break;
+            case "10":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData10));
+              break;
+            case "11":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData11));
+              break;
+            case "12":
+              rectifieHistoryList = JSON.parse(JSON.stringify(recitifieHistoryData12));
+              break;
+          }
+
+          // 정류기 히스토리 테이블 기존 데이터 삭제
+          $('#rectifieHistoryTable').children('tbody').empty();
+
+          for(var idx in rectifieHistoryList) {
+
+            var inputVoltage;
+            var inputCurrent;
+            var insideTemp;
+            var outsideTemp;
+            var outsideHumidity;
+            var statusCol;
+
+            inputVoltage = getRandom(350, 400).toFixed(2);
+            inputCurrent = getRandom(1, 4).toFixed(2);
+            insideTemp = getRandom(22, 40).toFixed(2);
+            outsideTemp = getRandom(20, 30).toFixed(2);
+            outsideHumidity = getRandom(32, 70).toFixed(2);
+
+            if(rectifieHistoryList[idx].status == "normal") {
+              statusCol = '<td><span class="alert_box bg_green">정상</span></td>';
+            } else if(rectifieHistoryList[idx].status == "broken") {
+              statusCol = '<td><span class="alert_box bg_red">고장</span></td>';
+            }
+
+            // 정류기 히스토리 테이블 업데이트
+            $('#rectifieHistoryTable').children('tbody').append(
+                        '<tr>'+
+                          '<td>' + rectifieHistoryList[idx].date + '</td>'+
+                          '<td><span class="alert_box">' + rectifieHistoryList[idx].progressName + '</span></td>'+
+                          '<td>' + rectifieHistoryList[idx].rectifierNo + '</td>'+
+                          statusCol +
+                          '<td><span class="color_red">' + inputVoltage + '</span></td>'+
+                          '<td><span class="color_blue">' + inputCurrent + '</span></td>'+
+                          '<td>' + insideTemp + '</td>'+
+                          '<td>' + outsideTemp + '</td>'+
+                          '<td>' + outsideHumidity + '</td>'+
+                        '</tr>');
+          }
+
+
+          dialog.dialog("open");
         });
       }));
 
@@ -100,7 +208,7 @@
             break;
         }
 
-        console.log(dataList);
+        // console.log(dataList);
         // 차후 ajax를 통한 data load 후 dataList 전달
         setData(dataList);
       }
@@ -252,7 +360,7 @@
         }
 
         // 공정 수
-        console.log(runningCnt);
+        // console.log(runningCnt);
         $('#progressCount').text(runningCnt + "개")
 
         // $('#p1').addClass("on");
@@ -778,25 +886,25 @@
       <div class="historyDialog_wrap">
         <div class="h2__wrap d-flex between">
           <h2 class="h2_comm">이력 리스트</h2>
-          <a href="#" class="btn_view_all" id="showModal">전체보기</a>
         </div>
 
         <!-- s:table -->                        
         <div class="bbs">
-          <table class="b-list">
+          <table class="b-list" id="rectifieHistoryTable">
               <caption>상세보기</caption>
               <colgroup>
-                  <col style="width:12.5%">
-                  <col style="width:12.5%">
-                  <col style="width:12.5%">
-                  <col style="width:12.5%">
-                  <col style="width:12.5%">
-                  <col style="width:12.5%">
-                  <col style="width:12.5%">
-                  <col style="width:12.5%">
+                  <col style="width:11.11%">
+                  <col style="width:11.11%">
+                  <col style="width:11.11%">
+                  <col style="width:11.11%">
+                  <col style="width:11.11%">
+                  <col style="width:11.11%">
+                  <col style="width:11.11%">
+                  <col style="width:11.11%">
               </colgroup>
               <thead>
                   <tr>
+                      <th scope="col">시간</th>
                       <th scope="col">공정명</th>
                       <th scope="col">정류기 번호</th>
                       <th scope="col">상태</th>
@@ -808,96 +916,6 @@
                   </tr>
               </thead>
               <tbody>
-                  <tr>
-                      <td><span class="alert_box">Etching</span></td>
-                      <td>1</td>
-                      <td><span class="alert_box bg_green">운전</span></td>
-                      <td><span class="color_red">379.2</span></td>
-                      <td><span class="color_blue">2.5</span></td>
-                      <td>35.7</td>
-                      <td>33.5</td>
-                      <td>45.7</td>
-                  </tr>
-                  <tr>
-                      <td><span class="alert_box line_btm">Cu Plating</span></td>
-                      <td>2</td>
-                      <td><span class="alert_box bg_green">운전</span></td>
-                      <td><span class="color_red">379.2</span></td>
-                      <td><span class="color_blue">2.5</span></td>
-                      <td>35.7</td>
-                      <td>33.5</td>
-                      <td>45.7</td>
-                  </tr>
-                  <tr>
-                      <td><span class="alert_box line_two">Cu Plating</span></td>
-                      <td>3</td>
-                      <td><span class="alert_box bg_green">운전</span></td>
-                      <td><span class="color_red">379.2</span></td>
-                      <td><span class="color_blue">2.5</span></td>
-                      <td>35.7</td>
-                      <td>33.5</td>
-                      <td>45.7</td>
-                  </tr>
-                  <tr>
-                      <td><span class="alert_box line_up">Cu Plating</span></td>
-                      <td>4</td>
-                      <td><span class="alert_box bg_green">운전</span></td>
-                      <td><span class="color_red">379.2</span></td>
-                      <td><span class="color_blue">2.5</span></td>
-                      <td>35.7</td>
-                      <td>33.5</td>
-                      <td>45.7</td>
-                  </tr>
-                  <tr>
-                      <td><span class="alert_box line_btm">반광택 Ni A</span></td>
-                      <td>5</td>
-                      <td><span class="alert_box bg_green">운전</span></td>
-                      <td><span class="color_red">379.2</span></td>
-                      <td><span class="color_blue">2.5</span></td>
-                      <td>35.7</td>
-                      <td>33.5</td>
-                      <td>45.7</td>
-                  </tr>
-                  <tr>
-                      <td><span class="alert_box line_up">반광택 Ni A</span></td>
-                      <td>6</td>
-                      <td><span class="alert_box bg_green">운전</span></td>
-                      <td><span class="color_red">379.2</span></td>
-                      <td><span class="color_blue">2.5</span></td>
-                      <td>35.7</td>
-                      <td>33.5</td>
-                      <td>45.7</td>
-                  </tr>
-                  <tr>
-                      <td><span class="alert_box line_up">반광택 Ni A</span></td>
-                      <td>7</td>
-                      <td><span class="alert_box bg_green">운전</span></td>
-                      <td><span class="color_red">379.2</span></td>
-                      <td><span class="color_blue">2.5</span></td>
-                      <td>35.7</td>
-                      <td>33.5</td>
-                      <td>45.7</td>
-                  </tr>
-                  <tr>
-                      <td><span class="alert_box line_up">반광택 Ni A</span></td>
-                      <td>7</td>
-                      <td><span class="alert_box bg_green">운전</span></td>
-                      <td><span class="color_red">379.2</span></td>
-                      <td><span class="color_blue">2.5</span></td>
-                      <td>35.7</td>
-                      <td>33.5</td>
-                      <td>45.7</td>
-                  </tr>
-                  <tr>
-                      <td><span class="alert_box line_up">반광택 Ni A</span></td>
-                      <td>7</td>
-                      <td><span class="alert_box bg_green">운전</span></td>
-                      <td><span class="color_red">379.2</span></td>
-                      <td><span class="color_blue">2.5</span></td>
-                      <td>35.7</td>
-                      <td>33.5</td>
-                      <td>45.7</td>
-                  </tr>
               </tbody>
           </table>
         </div>
