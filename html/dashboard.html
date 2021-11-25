@@ -156,17 +156,17 @@
             inputVoltage = getRandom(12, 13).toFixed(2);
           } else if(rectifieHistoryList[idx].status == "broken") {
             statusCol = '<td><span class="alert_box bg_red">고장</span></td>';
-            inputVoltage = getRandom(12, 14).toFixed(2);
+            inputVoltage = getRandom(13, 14).toFixed(2);
           }
 
           // 정류기 히스토리 팝업 테이블 업데이트
           $('#rectifieHistoryTable').children('tbody').append(
-                      '<tr>'+
+                      '<tr ' + (rectifieHistoryList[idx].date > '2021-11-25 14:38:02' ? 'style="background: #fae1e1;"' : '') + '>'+
                         '<td>' + rectifieHistoryList[idx].date + '</td>'+
                         '<td><span class="alert_box">' + rectifieHistoryList[idx].progressName + '</span></td>'+
                         '<td>' + rectifieHistoryList[idx].rectifierNo + '</td>'+
                         statusCol +
-                        '<td><span class="color_red">' + inputVoltage + '</span></td>'+
+                        '<td><span class="color_red">' + inputVoltage + (rectifieHistoryList[idx].date > '2021-11-25 14:38:02' ? '(예측)' : '') + '</span></td>'+
                         '<td><span class="color_blue">' + inputCurrent + '</span></td>'+
                         '<td>' + insideTemp + '</td>'+
                         '<td>' + outsideTemp + '</td>'+
@@ -441,7 +441,7 @@
                 <a href="#"> <span>1라인</span></a>
                 <a href="#" class="on ml10"> <span>2라인</span></a>
             </nav>
-            <p class="update">최근 업데이트: 2021.09.18 14:23:00</p>
+            <p class="update">최근 업데이트: 2021.11.25 14:33:00</p>
         </header>
         <main id="content">
             <div class="up_content">
