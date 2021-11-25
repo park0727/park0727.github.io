@@ -144,10 +144,10 @@
           var statusCol;
 
           inputVoltage = getRandom(10, 12).toFixed(2);
-          inputCurrent = getRandom(1, 4).toFixed(2);
-          insideTemp = getRandom(22, 40).toFixed(2);
-          outsideTemp = getRandom(20, 30).toFixed(2);
-          outsideHumidity = getRandom(32, 70).toFixed(2);
+          inputCurrent = getRandom(10, 50).toFixed(2);
+          insideTemp = getRandom(10, 40).toFixed(2);
+          outsideTemp = getRandom(5, 10).toFixed(2);
+          outsideHumidity = getRandom(30, 60).toFixed(2);
 
           if(rectifieHistoryList[idx].status == "normal") {
             statusCol = '<td><span class="alert_box bg_green">정상</span></td>';
@@ -290,7 +290,7 @@
             $('#p'+dataList[idx].rectifierNo).removeClass('blink');
             statusCol = '<td><span class="alert_box bg_green">운전</span></td>';
             inputVoltage = getRandom(10, 12).toFixed(2);
-            inputCurrent = getRandom(1, 4).toFixed(2);
+            inputCurrent = getRandom(10, 50).toFixed(2);
             // runningCnt++;
           } else if(dataList[idx].status == "stop") {
             $('#p'+dataList[idx].rectifierNo).removeClass('on');
@@ -305,8 +305,8 @@
             $('#p'+dataList[idx].rectifierNo).removeClass('broken');
             $('#p'+dataList[idx].rectifierNo).addClass('alert blink');
             statusCol = '<td><span class="alert_box bg_orange blink">주의</span></td>';
-            inputVoltage = "-";
-            inputCurrent = "-";
+            inputVoltage = getRandom(12, 13).toFixed(2);
+            inputCurrent = getRandom(10, 50).toFixed(2);
           } else if(dataList[idx].status == "broken") {
             $('#p'+dataList[idx].rectifierNo).removeClass('on');
             $('#p'+dataList[idx].rectifierNo).removeClass('alert');
@@ -316,9 +316,9 @@
             inputCurrent = "-";
           }
 
-          insideTemp = getRandom(22, 40).toFixed(2);
-          outsideTemp = getRandom(20, 30).toFixed(2);
-          outsideHumidity = getRandom(32, 70).toFixed(2);
+          insideTemp = getRandom(10, 40).toFixed(2);
+          outsideTemp = getRandom(5, 10).toFixed(2);
+          outsideHumidity = getRandom(30, 70).toFixed(2);
 
           // 정류기 현황 테이블 업데이트
           $('#rectifieTable').children('tbody').append(
